@@ -37,7 +37,6 @@ class _GudangPageState extends State<GudangPage> {
       body: BlocConsumer<GudangBloc, GudangState>(
         listener: (context, state) {
           if (state is GudangSuccess) {
-            // Kalau CRUD berhasil, reload lagi
             context.read<GudangBloc>().add(GetAllGudangEvent());
           }
         },

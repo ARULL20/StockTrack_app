@@ -51,36 +51,24 @@ class _KategoriBarangPageState extends State<KategoriBarangPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             child: const Text('Batal'),
           ),
           ElevatedButton(
             onPressed: () {
+              final entity = KategoriBarangEntity(
+                id: kategori?.id ?? 0,
+                nama: _namaController.text,
+                deskripsi: _deskripsiController.text,
+              );
+
               if (kategori == null) {
-                // Buat entity baru
-                final entity = KategoriBarangEntity(
-                  id: 0,
-                  nama: _namaController.text,
-                  deskripsi: _deskripsiController.text,
-                );
-                context.read<KategoriBarangBloc>().add(
-                      CreateKategoriBarangEvent(entity),
-                    );
+                context.read<KategoriBarangBloc>().add(CreateKategoriBarangEvent(entity));
               } else {
-                // Update entity
-                final entity = KategoriBarangEntity(
-                  id: kategori.id,
-                  nama: _namaController.text,
-                  deskripsi: _deskripsiController.text,
-                );
-                context.read<KategoriBarangBloc>().add(
-                      UpdateKategoriBarangEvent(kategori.id, entity),
-                    );
+                context.read<KategoriBarangBloc>().add(UpdateKategoriBarangEvent(kategori.id, entity));
               }
+
               Navigator.pop(context);
-              // Refresh data
               context.read<KategoriBarangBloc>().add(GetAllKategoriBarangEvent());
             },
             child: const Text('Simpan'),
@@ -126,10 +114,7 @@ class _KategoriBarangPageState extends State<KategoriBarangPage> {
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          context.read<KategoriBarangBloc>().add(
-                                DeleteKategoriBarangEvent(kategori.id),
-                              );
-                          // Refresh data
+                          context.read<KategoriBarangBloc>().add(DeleteKategoriBarangEvent(kategori.id));
                           context.read<KategoriBarangBloc>().add(GetAllKategoriBarangEvent());
                         },
                       ),
