@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:stoktrack_app/features/gudang/data/datasources/gudang_remote_datasource.dart';
+import 'package:stoktrack_app/features/gudang/data/repositories/gudang_repository_impl.dart';
+import 'package:stoktrack_app/features/gudang/domain/usecase/create_gudang.dart';
+import 'package:stoktrack_app/features/gudang/domain/usecase/delete_gudang.dart';
+import 'package:stoktrack_app/features/gudang/domain/usecase/update_gudang.dart';
+import 'package:stoktrack_app/features/gudang/presentation/bloc/gudang_bloc.dart';
 import 'package:stoktrack_app/features/kategori_barang/data/datasources/kategori_barang_remote_datasource.dart';
 import 'package:stoktrack_app/features/kategori_barang/data/repositories/kategori_barang_repository_impl.dart.dart';
 
@@ -19,6 +25,7 @@ import 'features/auth/presentation/pages/dashboard_admin_page.dart';
 import 'features/auth/presentation/pages/dashboard_pegawai_page.dart';
 
 // Tambah Bloc Kategori
+import 'features/gudang/domain/usecase/get_all_gudang.dart' show GetAllGudang;
 import 'features/kategori_barang/presentation/bloc/kategori_barang_bloc.dart';
 import 'features/kategori_barang/domain/usecase/get_all_kategori_barang.dart';
 import 'features/kategori_barang/domain/usecase/create_kategori_barang.dart';
@@ -44,6 +51,13 @@ void main() {
   final updateKategoriBarang = UpdateKategoriBarang(kategoriRepository);
   final deleteKategoriBarang = DeleteKategoriBarang(kategoriRepository);
 
+final gudangRemoteDatasource = GudangRemoteDatasourceImpl(client: apiClient);
+final gudangRepository = GudangRepositoryImpl(remoteDatasource: gudangRemoteDatasource);
+final getAllGudang = GetAllGudang(gudangRepository);
+final createGudang = CreateGudang(gudangRepository);
+final updateGudang = UpdateGudang(gudangRepository);
+final deleteGudang = DeleteGudang(gudangRepository);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -62,6 +76,14 @@ void main() {
             delete: deleteKategoriBarang,
           ),
         ),
+        BlocProvider(
+        create: (_) => GudangBloc(
+        getAll: getAllGudang,
+        create: createGudang,
+        update: updateGudang,
+        delete: deleteGudang,
+  ),
+),
       ],
       child: const MyApp(),
     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stoktrack_app/features/auth/presentation/pages/login_page.dart';
 import 'package:stoktrack_app/features/kategori_barang/presentation/pages/kategori_barang_page.dart';
+import 'package:stoktrack_app/features/gudang/presentation/pages/gudang_page.dart'; // ✅ Import GudangPage
 
 class DashboardPegawaiPage extends StatelessWidget {
   const DashboardPegawaiPage({super.key});
@@ -45,6 +46,18 @@ class DashboardPegawaiPage extends StatelessWidget {
                 );
               },
               child: const Text('Kelola Kategori Barang'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const GudangPage(),
+                  ),
+                );
+              },
+              child: const Text('Kelola Gudang'),
             ),
           ],
         ),
