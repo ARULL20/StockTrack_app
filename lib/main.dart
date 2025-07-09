@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:stoktrack_app/features/kategori_barang/data/repositories/kategori_barang_repository_impl.dart.dart';
 
-// Core
+// === CORE ===
 import 'core/api_client.dart';
 
 // === AUTH ===
@@ -47,6 +47,23 @@ import 'features/barang/domain/usecases/delete_barang.dart';
 import 'features/barang/domain/usecases/upload_gambar_barang.dart';
 import 'features/barang/presentation/bloc/barang_bloc.dart';
 
+// === KATEGORI MAKANAN === 
+import 'features/kategori_makanan/data/datasources/kategori_makanan_remote_datasource.dart';
+import 'features/kategori_makanan/data/repositories/kategori_makanan_repository_impl.dart';
+import 'features/kategori_makanan/domain/usecases/get_all_kategori_makanan.dart';
+import 'features/kategori_makanan/domain/usecases/create_kategori_makanan.dart';
+import 'features/kategori_makanan/domain/usecases/update_kategori_makanan.dart';
+import 'features/kategori_makanan/domain/usecases/delete_kategori_makanan.dart';
+import 'features/kategori_makanan/presentation/bloc/kategori_makanan_bloc.dart';
+
+// == KATEGORI MINUMAN ===
+import 'features/kategori_minuman/data/datasources/kategori_minuman_remote_datasource.dart';
+import 'features/kategori_minuman/data/repositories/kategori_minuman_repository_impl.dart';
+import 'features/kategori_minuman/domain/usecases/get_all_kategori_minuman.dart';
+import 'features/kategori_minuman/domain/usecases/create_kategori_minuman.dart';
+import 'features/kategori_minuman/domain/usecases/update_kategori_minuman.dart';
+import 'features/kategori_minuman/domain/usecases/delete_kategori_minuman.dart';
+import 'features/kategori_minuman/presentation/bloc/kategori_minuman_bloc.dart';
 void main() {
   final apiClient = ApiClient();
 
@@ -82,6 +99,22 @@ void main() {
   final deleteBarang = DeleteBarang(barangRepository);
   final uploadGambar = UploadGambarBarang(barangRepository);
 
+  // === KATEGORI MAKANAN === 
+  final kategoriMakananRemoteDatasource = KategoriMakananRemoteDatasourceImpl(apiClient: apiClient);
+  final kategoriMakananRepository = KategoriMakananRepositoryImpl(remoteDatasource: kategoriMakananRemoteDatasource);
+  final getAllKategoriMakanan = GetAllKategoriMakanan(kategoriMakananRepository);
+  final createKategoriMakanan = CreateKategoriMakanan(kategoriMakananRepository);
+  final updateKategoriMakanan = UpdateKategoriMakanan(kategoriMakananRepository);
+  final deleteKategoriMakanan = DeleteKategoriMakanan(kategoriMakananRepository);
+
+  // === KATEGORI MINUMAN === 
+  final kategoriMinumanRemoteDatasource = KategoriMinumanRemoteDatasourceImpl(apiClient: apiClient);
+  final kategoriMinumanRepository = KategoriMinumanRepositoryImpl(remoteDatasource: kategoriMinumanRemoteDatasource);
+  final getAllKategoriMinuman = GetAllKategoriMinuman(kategoriMinumanRepository);
+  final createKategoriMinuman = CreateKategoriMinuman(kategoriMinumanRepository);
+  final updateKategoriMinuman = UpdateKategoriMinuman(kategoriMinumanRepository);
+  final deleteKategoriMinuman = DeleteKategoriMinuman(kategoriMinumanRepository);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -115,6 +148,22 @@ void main() {
             updateBarang: updateBarang,
             deleteBarang: deleteBarang,
             uploadGambarBarang: uploadGambar,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => KategoriMakananBloc(
+            getAll: getAllKategoriMakanan,
+            create: createKategoriMakanan,
+            update: updateKategoriMakanan,
+            delete: deleteKategoriMakanan,
+          ),
+        ),
+        BlocProvider(
+            create: (_) => KategoriMinumanBloc(
+            getAll: getAllKategoriMinuman,
+            create: createKategoriMinuman,
+            update: updateKategoriMinuman,
+            delete: deleteKategoriMinuman,
           ),
         ),
       ],

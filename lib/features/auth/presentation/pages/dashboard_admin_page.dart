@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stoktrack_app/features/auth/presentation/pages/login_page.dart';
 import 'package:stoktrack_app/features/kategori_barang/presentation/pages/kategori_barang_page.dart';
 import 'package:stoktrack_app/features/gudang/presentation/pages/gudang_page.dart';
-import 'package:stoktrack_app/features/barang/presentation/pages/barang_page.dart'; // ✅ Import BarangPage
+import 'package:stoktrack_app/features/barang/presentation/pages/barang_page.dart';
+import 'package:stoktrack_app/features/kategori_makanan/presentation/pages/kategori_makanan_page.dart';
+import 'package:stoktrack_app/features/kategori_minuman/presentation/pages/kategori_minuman_page.dart'; // ✅ Import KategoriMinumanPage
 
 class DashboardAdminPage extends StatelessWidget {
   const DashboardAdminPage({super.key});
@@ -71,6 +73,30 @@ class DashboardAdminPage extends StatelessWidget {
                 );
               },
               child: const Text('Kelola Barang'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const KategoriMakananPage(),
+                  ),
+                );
+              },
+              child: const Text('Kelola Kategori Makanan'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const KategoriMinumanPage(),
+                  ),
+                );
+              },
+              child: const Text('Kelola Kategori Minuman'),
             ),
           ],
         ),
