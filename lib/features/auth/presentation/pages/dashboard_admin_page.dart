@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:stoktrack_app/features/auth/presentation/pages/login_page.dart';
+import 'package:stoktrack_app/features/barang_keluar/presentation/pages/barang_keluar_page.dart';
 import 'package:stoktrack_app/features/kategori_barang/presentation/pages/kategori_barang_page.dart';
 import 'package:stoktrack_app/features/gudang/presentation/pages/gudang_page.dart';
 import 'package:stoktrack_app/features/barang/presentation/pages/barang_page.dart';
 import 'package:stoktrack_app/features/kategori_makanan/presentation/pages/kategori_makanan_page.dart';
-import 'package:stoktrack_app/features/kategori_minuman/presentation/pages/kategori_minuman_page.dart'; // ✅ Import KategoriMinumanPage
+import 'package:stoktrack_app/features/kategori_minuman/presentation/pages/kategori_minuman_page.dart';
+import 'package:stoktrack_app/features/makanan/presentation/pages/makanan_page.dart';
+import 'package:stoktrack_app/features/minuman/presentation/pages/minuman_page.dart'; // ✅ Import MinumanPage
 
 class DashboardAdminPage extends StatelessWidget {
   const DashboardAdminPage({super.key});
@@ -34,71 +38,109 @@ class DashboardAdminPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Selamat datang Admin!'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const KategoriBarangPage(),
-                  ),
-                );
-              },
-              child: const Text('Kelola Kategori Barang'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const GudangPage(),
-                  ),
-                );
-              },
-              child: const Text('Kelola Gudang'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const BarangPage(),
-                  ),
-                );
-              },
-              child: const Text('Kelola Barang'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const KategoriMakananPage(),
-                  ),
-                );
-              },
-              child: const Text('Kelola Kategori Makanan'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const KategoriMinumanPage(),
-                  ),
-                );
-              },
-              child: const Text('Kelola Kategori Minuman'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Selamat datang Admin!'),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const KategoriBarangPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Kategori Barang'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const GudangPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Gudang'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BarangPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Barang'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const KategoriMakananPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Kategori Makanan'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const KategoriMinumanPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Kategori Minuman'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MakananPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Makanan'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MinumanPage(),
+                    ),
+                  );
+                },
+                child: const Text('Kelola Minuman'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BarangKeluarPage(),
+                    ),
+                  );
+                },
+                child: const Text('Barang Keluar'),
+              ),
+
+            ],
+          ),
         ),
       ),
     );

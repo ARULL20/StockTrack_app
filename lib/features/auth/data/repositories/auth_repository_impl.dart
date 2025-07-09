@@ -1,6 +1,6 @@
-import 'package:stoktrack_app/features/auth/domain/entities/user_entity.dart';
-import 'package:stoktrack_app/features/auth/domain/repositories/auth_repository.dart';
-import 'package:stoktrack_app/features/auth/data/datasources/auth_remote_datasource.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../datasources/auth_remote_datasource.dart';
+import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDatasource remoteDatasource;
@@ -8,17 +8,17 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDatasource});
 
   @override
-  Future<UserEntity> login(String email, String password) {
+  Future<UserModel> login(String email, String password) {
     return remoteDatasource.login(email, password);
   }
 
   @override
-  Future<UserEntity> register(String name, String email, String password) {
+  Future<UserModel> register(String name, String email, String password) {
     return remoteDatasource.register(name, email, password);
   }
 
   @override
-  Future<UserEntity> getProfile(String token) {
+  Future<UserModel> getProfile(String token) {
     return remoteDatasource.getProfile(token);
   }
 }

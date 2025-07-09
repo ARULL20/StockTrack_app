@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // ✅ Tambah ini
 import 'package:stoktrack_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:stoktrack_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:stoktrack_app/features/auth/domain/usecases/get_profile_usecase.dart';
@@ -19,6 +20,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final user = await loginUsecase(event.email, event.password);
+
+        // ✅ SIMPAN TOKEN JWT di SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', user.token);
+
         emit(AuthSuccess(user: user));
       } catch (e) {
         emit(AuthFailure(message: e.toString()));
@@ -33,6 +39,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.email,
           event.password,
         );
+
+        // ✅ SIMPAN TOKEN JWT kalau register auto-login
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', user.token);
+
         emit(AuthSuccess(user: user));
       } catch (e) {
         emit(AuthFailure(message: e.toString()));
@@ -50,3 +61,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 }
+

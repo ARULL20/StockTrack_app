@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
@@ -9,79 +8,74 @@ abstract class AuthRemoteDatasource {
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
-  final http.Client client;
+  final Dio dio;
 
-  AuthRemoteDatasourceImpl({required this.client});
+  AuthRemoteDatasourceImpl({required this.dio});
 
   final String baseUrl = 'http://10.0.2.2:8000/api';
 
   @override
   Future<UserModel> login(String email, String password) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
+    final response = await dio.post(
+      '$baseUrl/login',
+      data: {
         'email': email,
         'password': password,
-      }),
+      },
     );
 
     if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
+      final body = response.data;
       final token = body['access_token'];
-
-      // 🔑 Setelah dapat token, ambil profil user
       return getProfile(token);
     } else {
-      throw Exception('Login gagal: ${response.body}');
+      throw Exception('Login gagal: ${response.data}');
     }
   }
 
   @override
   Future<UserModel> register(String name, String email, String password) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
+    final response = await dio.post(
+      '$baseUrl/register',
+      data: {
         'name': name,
         'email': email,
         'password': password,
         'password_confirmation': password,
-        'role': 'pegawai', // Kalau mau default
-      }),
+        'role': 'pegawai',
+      },
     );
 
     if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
+      final body = response.data;
       final token = body['access_token'];
-
-      // 🔑 Setelah register, ambil profil user
       return getProfile(token);
     } else {
-      throw Exception('Register gagal: ${response.body}');
+      throw Exception('Register gagal: ${response.data}');
     }
   }
 
   @override
-Future<UserModel> getProfile(String token) async {
-  final response = await client.get(
-    Uri.parse('$baseUrl/user'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
-    },
-  );
+  Future<UserModel> getProfile(String token) async {
+    final response = await dio.get(
+      '$baseUrl/user',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ),
+    );
 
-  print('📥 RESPONSE BODY getProfile: ${response.body}');
+    print('📥 RESPONSE BODY getProfile: ${response.data}');
 
-  if (response.statusCode == 200) {
-    final body = jsonDecode(response.body);
-    print('📤 PARSED BODY: $body');
+    if (response.statusCode == 200) {
+      final body = response.data;
+      print('📤 PARSED BODY: $body');
 
-    return UserModel.fromJson(body, token);
-  } else {
-    throw Exception('Gagal ambil profil: ${response.body}');
+      return UserModel.fromJson(body, token);
+    } else {
+      throw Exception('Gagal ambil profil: ${response.data}');
+    }
   }
-}
-
 }
