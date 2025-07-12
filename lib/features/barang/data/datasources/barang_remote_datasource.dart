@@ -7,7 +7,7 @@ import '../models/barang_model.dart';
 
 abstract class BarangRemoteDatasource {
   Future<List<Barang>> getAllBarang();
-  Future<void> createBarang(Map<String, dynamic> data);
+  Future<int> createBarang(Map<String, dynamic> data);
   Future<void> updateBarang(int id, Map<String, dynamic> data);
   Future<void> deleteBarang(int id);
   Future<void> uploadGambar(int id, File gambar);
@@ -27,9 +27,11 @@ class BarangRemoteDatasourceImpl implements BarangRemoteDatasource {
   }
 
   @override
-  Future<void> createBarang(Map<String, dynamic> data) async {
-    await apiClient.post('/barang', body: data);
-  }
+Future<int> createBarang(Map<String, dynamic> data) async {
+  final response = await apiClient.post('/barang', body: data);
+  return response['data']['id']; // ambil ID dari response
+}
+
 
   @override
   Future<void> updateBarang(int id, Map<String, dynamic> data) async {

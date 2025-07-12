@@ -42,15 +42,17 @@ class BarangBloc extends Bloc<BarangEvent, BarangState> {
   }
 
   Future<void> _onCreateBarang(CreateBarangEvent event, Emitter<BarangState> emit) async {
-    emit(BarangLoading());
-    try {
-      await createBarang(event.data);
-      emit(BarangOperationSuccess('Barang berhasil dibuat'));
-      add(FetchBarang()); // refresh list
-    } catch (e) {
-      emit(BarangError(e.toString()));
-    }
+  emit(BarangLoading());
+  try {
+    final id = await createBarang(event.data); // simpan ID baru
+    emit(BarangOperationSuccess('Barang berhasil dibuat (ID: $id)'));
+    add(FetchBarang());
+  } catch (e) {
+    emit(BarangError(e.toString()));
   }
+}
+
+
 
   Future<void> _onUpdateBarang(UpdateBarangEvent event, Emitter<BarangState> emit) async {
     emit(BarangLoading());

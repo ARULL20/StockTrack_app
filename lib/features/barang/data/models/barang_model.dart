@@ -1,13 +1,11 @@
-// lib/features/barang/data/models/barang_model.dart
-
-import '../../domain/entities/barang.dart';
+import 'package:stoktrack_app/features/barang/domain/entities/barang.dart';
 
 class BarangModel extends Barang {
   BarangModel({
     required int id,
     required String nama,
     String? deskripsi,
-    String? gambar,
+    String? gambar,  // ✅ Pakai yang sudah ada
     required int stok,
     required double harga,
     required int kategoriBarangId,
@@ -16,7 +14,7 @@ class BarangModel extends Barang {
           id: id,
           nama: nama,
           deskripsi: deskripsi,
-          gambar: gambar,
+          gambar: gambar, // ✅ Field parent Barang
           stok: stok,
           harga: harga,
           kategoriBarangId: kategoriBarangId,
@@ -28,7 +26,7 @@ class BarangModel extends Barang {
       id: json['id'],
       nama: json['nama'],
       deskripsi: json['deskripsi'],
-      gambar: json['gambar'],
+      gambar: json['gambar_url'], // ✅ ISI gambar = gambar_url dari API
       stok: json['stok'],
       harga: double.tryParse(json['harga'].toString()) ?? 0,
       kategoriBarangId: json['kategori_barang_id'],

@@ -7,7 +7,8 @@ class CreateBarang {
 
   CreateBarang(this.repository);
 
-  Future<void> call(Map<String, dynamic> data) async {
-    await repository.createBarang(data);
-  }
+  Future<int> call(Map<String, dynamic> data) async {
+  return await repository.createBarang(data);
+}
+
 }

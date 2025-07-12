@@ -1,5 +1,3 @@
-// lib/features/barang/domain/entities/barang.dart
-
 class Barang {
   final int id;
   final String nama;
@@ -20,4 +18,9 @@ class Barang {
     required this.kategoriBarangId,
     required this.gudangId,
   });
+
+  String? get gambarUrl {
+    if (gambar == null) return null;
+    return 'http://10.0.2.2:8000/storage/$gambar';
+  }
 }

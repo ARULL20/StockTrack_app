@@ -14,7 +14,8 @@ class BarangRepositoryImpl implements BarangRepository {
   Future<List<Barang>> getAllBarang() => remoteDatasource.getAllBarang();
 
   @override
-  Future<void> createBarang(Map<String, dynamic> data) => remoteDatasource.createBarang(data);
+Future<int> createBarang(Map<String, dynamic> data) => remoteDatasource.createBarang(data);
+
 
   @override
   Future<void> updateBarang(int id, Map<String, dynamic> data) => remoteDatasource.updateBarang(id, data);

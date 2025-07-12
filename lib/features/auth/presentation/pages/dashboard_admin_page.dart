@@ -9,7 +9,9 @@ import 'package:stoktrack_app/features/barang/presentation/pages/barang_page.dar
 import 'package:stoktrack_app/features/kategori_makanan/presentation/pages/kategori_makanan_page.dart';
 import 'package:stoktrack_app/features/kategori_minuman/presentation/pages/kategori_minuman_page.dart';
 import 'package:stoktrack_app/features/makanan/presentation/pages/makanan_page.dart';
-import 'package:stoktrack_app/features/minuman/presentation/pages/minuman_page.dart'; // ✅ Import MinumanPage
+import 'package:stoktrack_app/features/minuman/presentation/pages/minuman_page.dart';
+
+import 'package:stoktrack_app/features/laporan/presentation/pages/laporan_page.dart';
 
 class DashboardAdminPage extends StatelessWidget {
   const DashboardAdminPage({super.key});
@@ -127,6 +129,7 @@ class DashboardAdminPage extends StatelessWidget {
                 },
                 child: const Text('Kelola Minuman'),
               ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -138,7 +141,19 @@ class DashboardAdminPage extends StatelessWidget {
                 },
                 child: const Text('Barang Keluar'),
               ),
-
+              const SizedBox(height: 10),
+              // ✅ Tombol Laporan
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LaporanPage(),
+                    ),
+                  );
+                },
+                child: const Text('Lihat Laporan'),
+              ),
             ],
           ),
         ),

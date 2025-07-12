@@ -53,20 +53,24 @@ class _BarangPageState extends State<BarangPage> {
     );
   }
 
-  /// ✅ Helper untuk menampilkan gambar barang
-  Widget buildBarangImage(String? gambar) {
+      Widget buildBarangImage(String? gambar) {
+    print('🟢 [DEBUG] URL GAMBAR: $gambar');
     if (gambar == null) {
       return const Icon(Icons.inventory, size: 50);
     }
     return Image.network(
-      'http://10.0.2.2:8000/storage/$gambar',
+      gambar,
       width: 50,
       height: 50,
       fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) =>
-          const Icon(Icons.broken_image, size: 50),
+      errorBuilder: (context, error, stackTrace) {
+        print('🔴 [ERROR IMAGE]: $error');
+        return const Icon(Icons.broken_image, size: 50);
+      },
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {

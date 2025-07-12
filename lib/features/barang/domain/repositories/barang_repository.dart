@@ -5,7 +5,7 @@ import '../entities/barang.dart';
 
 abstract class BarangRepository {
   Future<List<Barang>> getAllBarang();
-  Future<void> createBarang(Map<String, dynamic> data);
+  Future<int> createBarang(Map<String, dynamic> data);
   Future<void> updateBarang(int id, Map<String, dynamic> data);
   Future<void> deleteBarang(int id);
   Future<void> uploadGambar(int id, File gambar);

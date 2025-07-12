@@ -12,11 +12,14 @@ class FetchBarang extends BarangEvent {}
 
 class CreateBarangEvent extends BarangEvent {
   final Map<String, dynamic> data;
-  CreateBarangEvent(this.data);
+  final File? gambar;
+
+  CreateBarangEvent(this.data, {this.gambar});
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [data, gambar];
 }
+
 
 class UpdateBarangEvent extends BarangEvent {
   final int id;

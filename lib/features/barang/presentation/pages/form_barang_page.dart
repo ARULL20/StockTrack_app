@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entities/barang.dart';
 import '../bloc/barang_bloc.dart';
@@ -21,6 +24,8 @@ class _FormBarangPageState extends State<FormBarangPage> {
   late TextEditingController _hargaController;
   late TextEditingController _kategoriIdController;
   late TextEditingController _gudangIdController;
+
+  XFile? _pickedImage;
 
   @override
   void initState() {
@@ -44,25 +49,46 @@ class _FormBarangPageState extends State<FormBarangPage> {
     super.dispose();
   }
 
-  void _save() {
-    if (_formKey.currentState!.validate()) {
-      final data = {
-        'nama': _namaController.text,
-        'deskripsi': _deskripsiController.text,
-        'stok': int.parse(_stokController.text),
-        'harga': double.parse(_hargaController.text),
-        'kategori_barang_id': int.parse(_kategoriIdController.text),
-        'gudang_id': int.parse(_gudangIdController.text),
-      };
-
-      if (widget.barang == null) {
-        context.read<BarangBloc>().add(CreateBarangEvent(data));
-      } else {
-        context.read<BarangBloc>().add(UpdateBarangEvent(widget.barang!.id, data));
-      }
-      Navigator.pop(context);
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      setState(() {
+        _pickedImage = picked;
+      });
     }
   }
+
+  void _save() async {
+  if (_formKey.currentState!.validate()) {
+    final data = {
+      'nama': _namaController.text,
+      'deskripsi': _deskripsiController.text,
+      'stok': int.parse(_stokController.text),
+      'harga': double.parse(_hargaController.text),
+      'kategori_barang_id': int.parse(_kategoriIdController.text),
+      'gudang_id': int.parse(_gudangIdController.text),
+    };
+
+    final bloc = context.read<BarangBloc>();
+
+    if (widget.barang == null) {
+      final id = await bloc.createBarang.call(data);
+      if (_pickedImage != null) {
+        await bloc.uploadGambarBarang.call(id, File(_pickedImage!.path));
+      }
+      bloc.add(FetchBarang());
+    } else {
+      bloc.add(UpdateBarangEvent(widget.barang!.id, data));
+      if (_pickedImage != null) {
+        bloc.add(UploadGambarEvent(widget.barang!.id, File(_pickedImage!.path)));
+      }
+    }
+
+    Navigator.pop(context);
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +151,19 @@ class _FormBarangPageState extends State<FormBarangPage> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: const Text('Pilih Gambar'),
+              ),
+              if (_pickedImage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Image.file(
+                    File(_pickedImage!.path),
+                    height: 150,
+                  ),
+                ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _save,

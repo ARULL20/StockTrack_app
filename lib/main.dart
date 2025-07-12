@@ -96,6 +96,13 @@ import 'features/barang_keluar/domain/usecases/delete_barang_keluar.dart';
 import 'features/barang_keluar/presentation/bloc/barang_keluar_bloc.dart';
 import 'package:stoktrack_app/features/barang_keluar/data/datasources/barang_keluar_remote_data_source.dart';
 
+// === LAPORAN ===
+import 'features/laporan/data/datasources/laporan_remote_datasource.dart';
+import 'features/laporan/data/repositories/laporan_repository_impl.dart';
+import 'features/laporan/domain/usecase/get_pemasukan_total.dart';
+import 'features/laporan/domain/usecase/get_pengeluaran_total.dart';
+import 'features/laporan/presentation/bloc/laporan_bloc.dart';
+
 
 void main() {
   final apiClient = ApiClient();
@@ -180,6 +187,11 @@ void main() {
   final updateBarangKeluar = UpdateBarangKeluar(barangKeluarRepository);
   final deleteBarangKeluar = DeleteBarangKeluar(barangKeluarRepository);
 
+// === LAPORAN ===
+  final laporanRemoteDatasource = LaporanRemoteDatasource(dio: dio);
+  final laporanRepository = LaporanRepositoryImpl(remoteDatasource: laporanRemoteDatasource);
+  final getPemasukanTotal = GetPemasukanTotal(laporanRepository);
+  final getPengeluaranTotal = GetPengeluaranTotal(laporanRepository);
 
 
   runApp(
@@ -255,6 +267,12 @@ void main() {
             create: createBarangKeluar,
             update: updateBarangKeluar,
             delete: deleteBarangKeluar,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => LaporanBloc(
+            getPemasukanTotal: getPemasukanTotal,
+            getPengeluaranTotal: getPengeluaranTotal,
           ),
         ),
 
