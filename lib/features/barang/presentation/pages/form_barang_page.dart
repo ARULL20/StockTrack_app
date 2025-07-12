@@ -59,6 +59,17 @@ class _FormBarangPageState extends State<FormBarangPage> {
     }
   }
 
+  Future<void> _pickImageFromCamera() async {
+  final ImagePicker picker = ImagePicker();
+  final picked = await picker.pickImage(source: ImageSource.camera);
+  if (picked != null) {
+    setState(() {
+      _pickedImage = picked;
+    });
+  }
+}
+
+
   void _save() async {
   if (_formKey.currentState!.validate()) {
     final data = {
@@ -152,18 +163,28 @@ class _FormBarangPageState extends State<FormBarangPage> {
                 },
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _pickImage,
-                child: const Text('Pilih Gambar'),
-              ),
-              if (_pickedImage != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Image.file(
-                    File(_pickedImage!.path),
-                    height: 150,
-                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _pickImageFromCamera, 
+                  child: const Text('Ambil Foto'),
                 ),
+                ElevatedButton(
+                  onPressed: _pickImage,
+                  child: const Text('Pilih dari Galeri'),
+                ),
+              ],
+            ),
+            if (_pickedImage != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Image.file(
+                  File(_pickedImage!.path),
+                  height: 150,
+                ),
+              ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _save,
