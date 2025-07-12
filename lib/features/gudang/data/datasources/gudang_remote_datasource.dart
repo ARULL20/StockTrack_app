@@ -20,11 +20,13 @@ class GudangRemoteDatasourceImpl implements GudangRemoteDatasource {
     return data.map((e) => GudangModel.fromJson(e)).toList();
   }
 
-  @override
-  Future<GudangModel> create(GudangModel model) async {
-    final response = await client.dio.post('/gudang', data: model.toJson());
-    return GudangModel.fromJson(response.data['data']);
-  }
+ @override
+Future<GudangModel> create(GudangModel model) async {
+  print('➡️ JSON BODY: ${model.toJson()}');
+  final response = await client.dio.post('/gudang', data: model.toJson());
+  return GudangModel.fromJson(response.data['data']);
+}
+
 
   @override
   Future<GudangModel> update(int id, GudangModel model) async {

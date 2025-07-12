@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:stoktrack_app/features/gudang/presentation/pages/pick_location_page.dart';
 
 
 // === CORE ===
@@ -282,54 +283,61 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  Future<String?> _getSavedToken() async {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String? _token;
+  bool _profileFetched = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    final token = prefs.getString('token');
+    setState(() {
+      _token = token;
+    });
+    if (token != null && !_profileFetched) {
+      context.read<AuthBloc>().add(GetProfileEvent(token));
+      _profileFetched = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_token == null) {
+      return const MaterialApp(home: LoginPage());
+    }
+
     return MaterialApp(
       title: 'StokTrack',
       debugShowCheckedModeBanner: false,
       routes: {
+        '/pick-location': (context) => const PickLocationPage(),
         '/makanan-form': (context) => const MakananFormPage(),
-        '/minuman-form': (context) => const MinumanFormPage()
+        '/minuman-form': (context) => const MinumanFormPage(),
       },
-      home: FutureBuilder<String?>(
-        future: _getSavedToken(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoading) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
+          } else if (state is AuthSuccess) {
+            return state.user.role == 'admin'
+                ? const DashboardAdminPage()
+                : const DashboardPegawaiPage();
           } else {
-            final token = snapshot.data;
-            if (token != null) {
-              context.read<AuthBloc>().add(GetProfileEvent(token));
-              return BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthLoading) {
-                    return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    );
-                  } else if (state is AuthSuccess) {
-                    if (state.user.role == 'admin') {
-                      return const DashboardAdminPage();
-                    } else {
-                      return const DashboardPegawaiPage();
-                    }
-                  } else {
-                    return const LoginPage();
-                  }
-                },
-              );
-            } else {
-              return const LoginPage();
-            }
+            return const LoginPage();
           }
         },
       ),
