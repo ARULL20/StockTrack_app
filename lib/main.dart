@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:stoktrack_app/features/gudang/presentation/pages/pick_location_page.dart';
-import 'package:stoktrack_app/features/minuman/domain/usecases/upload_gambar_minuman.dart';
 
 
 
@@ -22,6 +20,8 @@ import 'features/auth/presentation/bloc/auth_state.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/dashboard_admin_page.dart';
 import 'features/auth/presentation/pages/dashboard_pegawai_page.dart';
+import 'package:stoktrack_app/features/auth/presentation/pages/welcome_page.dart';
+
 
 // === KATEGORI BARANG ===
 import 'features/kategori_barang/data/datasources/kategori_barang_remote_datasource.dart';
@@ -41,6 +41,8 @@ import 'features/gudang/domain/usecase/create_gudang.dart';
 import 'features/gudang/domain/usecase/update_gudang.dart';
 import 'features/gudang/domain/usecase/delete_gudang.dart';
 import 'features/gudang/presentation/bloc/gudang_bloc.dart';
+import 'package:stoktrack_app/features/gudang/presentation/pages/pick_location_page.dart';
+
 
 // === BARANG ===
 import 'features/barang/data/datasources/barang_remote_datasource.dart';
@@ -91,6 +93,8 @@ import 'features/minuman/domain/usecases/update_minuman.dart';
 import 'features/minuman/domain/usecases/delete_minuman.dart';
 import 'package:stoktrack_app/features/minuman/data/datasources/minuman_remote_datasource.dart';
 import 'features/minuman/domain/usecases/upload_gambar_minuman.dart';
+import 'package:stoktrack_app/features/minuman/domain/usecases/upload_gambar_minuman.dart';
+
 
 
 
@@ -328,7 +332,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (_token == null) {
-      return const MaterialApp(home: LoginPage());
+      return const MaterialApp(home: WelcomePage());
     }
 
     return MaterialApp(
