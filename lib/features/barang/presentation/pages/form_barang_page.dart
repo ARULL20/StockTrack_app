@@ -60,46 +60,44 @@ class _FormBarangPageState extends State<FormBarangPage> {
   }
 
   Future<void> _pickImageFromCamera() async {
-  final ImagePicker picker = ImagePicker();
-  final picked = await picker.pickImage(source: ImageSource.camera);
-  if (picked != null) {
-    setState(() {
-      _pickedImage = picked;
-    });
+    final ImagePicker picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.camera);
+    if (picked != null) {
+      setState(() {
+        _pickedImage = picked;
+      });
+    }
   }
-}
-
 
   void _save() async {
-  if (_formKey.currentState!.validate()) {
-    final data = {
-      'nama': _namaController.text,
-      'deskripsi': _deskripsiController.text,
-      'stok': int.parse(_stokController.text),
-      'harga': double.parse(_hargaController.text),
-      'kategori_barang_id': int.parse(_kategoriIdController.text),
-      'gudang_id': int.parse(_gudangIdController.text),
-    };
+    if (_formKey.currentState!.validate()) {
+      final data = {
+        'nama': _namaController.text,
+        'deskripsi': _deskripsiController.text,
+        'stok': int.parse(_stokController.text),
+        'harga': double.parse(_hargaController.text),
+        'kategori_barang_id': int.parse(_kategoriIdController.text),
+        'gudang_id': int.parse(_gudangIdController.text),
+      };
 
-    final bloc = context.read<BarangBloc>();
+      final bloc = context.read<BarangBloc>();
 
-    if (widget.barang == null) {
-      final id = await bloc.createBarang.call(data);
-      if (_pickedImage != null) {
-        await bloc.uploadGambarBarang.call(id, File(_pickedImage!.path));
+      if (widget.barang == null) {
+        final id = await bloc.createBarang.call(data);
+        if (_pickedImage != null) {
+          await bloc.uploadGambarBarang.call(id, File(_pickedImage!.path));
+        }
+        bloc.add(FetchBarang());
+      } else {
+        bloc.add(UpdateBarangEvent(widget.barang!.id, data));
+        if (_pickedImage != null) {
+          bloc.add(UploadGambarEvent(widget.barang!.id, File(_pickedImage!.path)));
+        }
       }
-      bloc.add(FetchBarang());
-    } else {
-      bloc.add(UpdateBarangEvent(widget.barang!.id, data));
-      if (_pickedImage != null) {
-        bloc.add(UploadGambarEvent(widget.barang!.id, File(_pickedImage!.path)));
-      }
+
+      Navigator.pop(context);
     }
-
-    Navigator.pop(context);
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -109,88 +107,109 @@ class _FormBarangPageState extends State<FormBarangPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _namaController,
-                decoration: const InputDecoration(labelText: 'Nama'),
-                validator: (value) => value == null || value.isEmpty ? 'Wajib diisi' : null,
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: _namaController,
+                    decoration: const InputDecoration(labelText: 'Nama'),
+                    validator: (value) => value == null || value.isEmpty ? 'Wajib diisi' : null,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _deskripsiController,
+                    decoration: const InputDecoration(labelText: 'Deskripsi'),
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _stokController,
+                    decoration: const InputDecoration(labelText: 'Stok'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Wajib diisi';
+                      if (int.tryParse(value) == null) return 'Harus angka';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _hargaController,
+                    decoration: const InputDecoration(labelText: 'Harga'),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Wajib diisi';
+                      if (double.tryParse(value) == null) return 'Harus angka';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _kategoriIdController,
+                    decoration: const InputDecoration(labelText: 'Kategori Barang ID'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Wajib diisi';
+                      if (int.tryParse(value) == null) return 'Harus angka';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _gudangIdController,
+                    decoration: const InputDecoration(labelText: 'Gudang ID'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Wajib diisi';
+                      if (int.tryParse(value) == null) return 'Harus angka';
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: _pickImageFromCamera,
+                        icon: const Icon(Icons.camera_alt),
+                        label: const Text('Kamera'),
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: _pickImage,
+                        icon: const Icon(Icons.photo_library),
+                        label: const Text('Galeri'),
+                      ),
+                    ],
+                  ),
+                  if (_pickedImage != null) ...[
+                    const SizedBox(height: 16),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(_pickedImage!.path),
+                        height: 180,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _save,
+                      child: const Text('Simpan'),
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _deskripsiController,
-                decoration: const InputDecoration(labelText: 'Deskripsi'),
-              ),
-              TextFormField(
-                controller: _stokController,
-                decoration: const InputDecoration(labelText: 'Stok'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Wajib diisi';
-                  if (int.tryParse(value) == null) return 'Harus angka';
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _hargaController,
-                decoration: const InputDecoration(labelText: 'Harga'),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Wajib diisi';
-                  if (double.tryParse(value) == null) return 'Harus angka';
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _kategoriIdController,
-                decoration: const InputDecoration(labelText: 'Kategori Barang ID'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Wajib diisi';
-                  if (int.tryParse(value) == null) return 'Harus angka';
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _gudangIdController,
-                decoration: const InputDecoration(labelText: 'Gudang ID'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Wajib diisi';
-                  if (int.tryParse(value) == null) return 'Harus angka';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _pickImageFromCamera, 
-                  child: const Text('Ambil Foto'),
-                ),
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  child: const Text('Pilih dari Galeri'),
-                ),
-              ],
             ),
-            if (_pickedImage != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Image.file(
-                  File(_pickedImage!.path),
-                  height: 150,
-                ),
-              ),
-
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _save,
-                child: const Text('Simpan'),
-              ),
-            ],
           ),
         ),
       ),

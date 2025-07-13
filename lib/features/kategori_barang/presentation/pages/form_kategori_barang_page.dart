@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stoktrack_app/core/widgets/custom_textfield.dart';
 
+import '../../domain/entities/kategori_barang_entity.dart';
 import '../bloc/kategori_barang_bloc.dart';
 import '../bloc/kategori_barang_event.dart';
-import '../../domain/entities/kategori_barang_entity.dart';
 
 class FormKategoriBarangPage extends StatefulWidget {
   const FormKategoriBarangPage({super.key, this.entity, this.isUpdate = false});
@@ -64,19 +65,23 @@ class _FormKategoriBarangPageState extends State<FormKategoriBarangPage> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
+              CustomTextField(
                 controller: _namaController,
-                decoration: const InputDecoration(labelText: 'Nama'),
-                validator: (value) => value == null || value.isEmpty ? 'Wajib diisi' : null,
+                label: 'Nama',
+                isRequired: true,
               ),
-              TextFormField(
+              const SizedBox(height: 16),
+              CustomTextField(
                 controller: _deskripsiController,
-                decoration: const InputDecoration(labelText: 'Deskripsi'),
+                label: 'Deskripsi',
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _save,
-                child: const Text('Simpan'),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _save,
+                  child: const Text('Simpan'),
+                ),
               ),
             ],
           ),
