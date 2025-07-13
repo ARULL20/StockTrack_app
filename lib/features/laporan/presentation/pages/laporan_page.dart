@@ -46,6 +46,20 @@ class _LaporanPageState extends State<LaporanPage> {
                     'Total Pengeluaran: Rp ${state.totalPengeluaran.toStringAsFixed(2)}',
                     style: const TextStyle(fontSize: 18),
                   ),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<LaporanBloc>().add(ExportPemasukanPDF());
+                    },
+                    child: const Text('Export Pemasukan PDF'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<LaporanBloc>().add(ExportPengeluaranPDF());
+                    },
+                    child: const Text('Export Pengeluaran PDF'),
+                  ),
                 ],
               ),
             );

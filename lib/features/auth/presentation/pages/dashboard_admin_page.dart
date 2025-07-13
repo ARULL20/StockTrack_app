@@ -142,7 +142,6 @@ class DashboardAdminPage extends StatelessWidget {
                 child: const Text('Barang Keluar'),
               ),
               const SizedBox(height: 10),
-              // ✅ Tombol Laporan
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(

@@ -32,3 +32,6 @@ class LaporanError extends LaporanState {
   @override
   List<Object?> get props => [message];
 }
+
+// 🔽 Tambah state untuk success export
+class ExportPDFSuccess extends LaporanState {}

@@ -274,6 +274,7 @@ void main() {
           create: (_) => LaporanBloc(
             getPemasukanTotal: getPemasukanTotal,
             getPengeluaranTotal: getPengeluaranTotal,
+            laporanRepository: laporanRepository,
           ),
         ),
 

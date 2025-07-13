@@ -8,5 +8,9 @@ abstract class LaporanEvent extends Equatable {
 }
 
 class LoadPemasukan extends LaporanEvent {}
-
 class LoadPengeluaran extends LaporanEvent {}
+
+// 🔽 Tambah event baru
+class ExportPemasukanPDF extends LaporanEvent {}
+
+class ExportPengeluaranPDF extends LaporanEvent {}

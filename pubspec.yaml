@@ -36,15 +36,17 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_bloc: ^8.1.4
   image_picker: ^1.0.7
-  pdf: ^3.10.4
   google_maps_flutter: ^2.6.0
   geolocator: ^10.1.0
   equatable: ^2.0.5
   json_annotation: ^4.8.1
   shared_preferences: ^2.2.2
   dio: ^5.4.3
+  path_provider: ^2.1.5
+  pdf: ^3.10.7
+  open_file: ^3.2.1
 
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
