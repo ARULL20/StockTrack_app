@@ -1,5 +1,3 @@
-// lib/features/barang/domain/usecases/update_barang.dart
-
 import '../repositories/barang_repository.dart';
 
 class UpdateBarang {

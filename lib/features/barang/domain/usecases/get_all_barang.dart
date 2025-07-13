@@ -1,5 +1,3 @@
-// lib/features/barang/domain/usecases/get_all_barang.dart
-
 import '../entities/barang.dart';
 import '../repositories/barang_repository.dart';
 

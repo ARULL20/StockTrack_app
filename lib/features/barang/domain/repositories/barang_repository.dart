@@ -1,5 +1,3 @@
-// lib/features/barang/domain/repositories/barang_repository.dart
-
 import 'dart:io';
 import '../entities/barang.dart';
 

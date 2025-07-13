@@ -1,5 +1,3 @@
-// lib/features/barang_keluar/presentation/bloc/barang_keluar_event.dart
-
 import 'package:equatable/equatable.dart';
 
 abstract class BarangKeluarEvent extends Equatable {

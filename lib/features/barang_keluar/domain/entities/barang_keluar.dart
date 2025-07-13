@@ -1,4 +1,3 @@
-// lib/features/barang_keluar/domain/entities/barang_keluar.dart
 import 'package:stoktrack_app/features/barang/domain/entities/barang.dart';
 
 class BarangKeluar {
@@ -9,7 +8,7 @@ class BarangKeluar {
   final String? keterangan;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final Barang barang; // ✅ TAMBAHKAN ini
+  final Barang barang; 
 
   BarangKeluar({
     required this.id,
@@ -19,6 +18,6 @@ class BarangKeluar {
     this.keterangan,
     required this.createdAt,
     required this.updatedAt,
-    required this.barang, // ✅
+    required this.barang, 
   });
 }

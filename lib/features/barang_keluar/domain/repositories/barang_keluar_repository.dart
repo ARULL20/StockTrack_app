@@ -1,4 +1,3 @@
-// lib/features/barang_keluar/domain/repositories/barang_keluar_repository.dart
 import '../entities/barang_keluar.dart';
 
 abstract class BarangKeluarRepository {

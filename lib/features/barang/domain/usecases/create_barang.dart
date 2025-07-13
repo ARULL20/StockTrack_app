@@ -1,5 +1,3 @@
-// lib/features/barang/domain/usecases/create_barang.dart
-
 import '../repositories/barang_repository.dart';
 
 class CreateBarang {

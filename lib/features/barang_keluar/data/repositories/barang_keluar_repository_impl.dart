@@ -1,4 +1,3 @@
-// lib/features/barang_keluar/data/repositories/barang_keluar_repository_impl.dart
 import 'package:stoktrack_app/features/barang_keluar/data/datasources/barang_keluar_remote_data_source.dart';
 
 import '../../domain/entities/barang_keluar.dart';
