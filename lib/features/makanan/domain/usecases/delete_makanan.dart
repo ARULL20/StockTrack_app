@@ -5,7 +5,7 @@ class DeleteMakanan {
 
   DeleteMakanan(this.repository);
 
-  Future<void> call(int id) {
-    return repository.delete(id); 
+  Future<void> call(int id) async {
+    await repository.deleteMakanan(id);
   }
 }

@@ -1,5 +1,3 @@
-// lib/features/barang/presentation/bloc/barang_event.dart
-
 import 'dart:io';
 import 'package:equatable/equatable.dart';
 

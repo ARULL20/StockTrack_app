@@ -5,8 +5,6 @@ import '../bloc/makanan_bloc.dart';
 import '../bloc/makanan_event.dart';
 import '../bloc/makanan_state.dart';
 
-import '../../domain/entities/makanan_entity.dart';
-
 class MakananListPage extends StatefulWidget {
   const MakananListPage({super.key});
 
@@ -18,8 +16,24 @@ class _MakananListPageState extends State<MakananListPage> {
   @override
   void initState() {
     super.initState();
-    // ✅ Trigger GET saat pertama buka
-    context.read<MakananBloc>().add(GetAllMakananEvent());
+    context.read<MakananBloc>().add(FetchMakanan());
+  }
+
+  Widget buildMakananImage(String? gambar) {
+    if (gambar == null || gambar.isEmpty) {
+      return const Icon(Icons.image_not_supported, size: 50);
+    }
+    final fullUrl = 'http://10.0.2.2:8000/storage/$gambar';
+    print('DEBUG URL GAMBAR: $fullUrl');
+    return Image.network(
+      fullUrl,
+      width: 50,
+      height: 50,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        return const Icon(Icons.broken_image, size: 50);
+      },
+    );
   }
 
   @override
@@ -31,14 +45,15 @@ class _MakananListPageState extends State<MakananListPage> {
           if (state is MakananLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MakananLoaded) {
-            if (state.listMakanan.isEmpty) {
+            if (state.makananList.isEmpty) {
               return const Center(child: Text('Data Kosong'));
             }
             return ListView.builder(
-              itemCount: state.listMakanan.length,
+              itemCount: state.makananList.length,
               itemBuilder: (context, index) {
-                final item = state.listMakanan[index];
+                final item = state.makananList[index];
                 return ListTile(
+                  leading: buildMakananImage(item.gambar),
                   title: Text(item.nama),
                   subtitle: Text('Rp ${item.harga.toStringAsFixed(0)}'),
                   trailing: Row(
@@ -47,14 +62,19 @@ class _MakananListPageState extends State<MakananListPage> {
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
-                          // ✅ Buka form dengan ARG edit
                           Navigator.pushNamed(
                             context,
                             '/makanan-form',
-                            arguments: item,
+                            arguments: {
+                              'id': item.id,
+                              'nama': item.nama,
+                              'deskripsi': item.deskripsi,
+                              'harga': item.harga,
+                              'kategori_makanan_id': item.kategoriMakananId,
+                              'gambar': item.gambar,
+                            },
                           ).then((_) {
-                            // ⏬ Refresh saat kembali dari form
-                            context.read<MakananBloc>().add(GetAllMakananEvent());
+                            context.read<MakananBloc>().add(FetchMakanan());
                           });
                         },
                       ),
@@ -69,8 +89,8 @@ class _MakananListPageState extends State<MakananListPage> {
                 );
               },
             );
-          } else if (state is MakananFailure) {
-            return Center(child: Text(state.message));
+          } else if (state is MakananError) {
+            return Center(child: Text(state.error));
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -79,8 +99,7 @@ class _MakananListPageState extends State<MakananListPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, '/makanan-form').then((_) {
-            // ⏬ Refresh saat kembali dari form tambah
-            context.read<MakananBloc>().add(GetAllMakananEvent());
+            context.read<MakananBloc>().add(FetchMakanan());
           });
         },
         child: const Icon(Icons.add),

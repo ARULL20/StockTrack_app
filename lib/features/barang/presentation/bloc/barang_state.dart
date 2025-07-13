@@ -1,5 +1,3 @@
-// lib/features/barang/presentation/bloc/barang_state.dart
-
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/barang.dart';
 

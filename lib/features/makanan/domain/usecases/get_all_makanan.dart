@@ -1,4 +1,4 @@
-import '../entities/makanan_entity.dart';
+import 'package:stoktrack_app/features/makanan/domain/entities/makanan_entity.dart';
 import '../repositories/makanan_repository.dart';
 
 class GetAllMakanan {
@@ -6,7 +6,7 @@ class GetAllMakanan {
 
   GetAllMakanan(this.repository);
 
-  Future<List<MakananEntity>> call() {
-    return repository.getAll();
+  Future<List<Makanan>> call() async {
+    return await repository.getAllMakanan();
   }
 }

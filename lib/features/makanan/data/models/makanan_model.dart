@@ -1,38 +1,30 @@
-import '../../domain/entities/makanan_entity.dart';
+import 'package:stoktrack_app/features/makanan/domain/entities/makanan_entity.dart';
 
-class MakananModel extends MakananEntity {
-  const MakananModel({
+class MakananModel extends Makanan {
+  MakananModel({
     required int id,
     required String nama,
-    required String deskripsi,
+    String? deskripsi,
     required double harga,
     required int kategoriMakananId,
+    String? gambar,
   }) : super(
           id: id,
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
           kategoriMakananId: kategoriMakananId,
+          gambar: gambar,
         );
 
   factory MakananModel.fromJson(Map<String, dynamic> json) {
-  return MakananModel(
-    id: json['id'],
-    nama: json['nama'],
-    deskripsi: json['deskripsi'] ?? '',
-    harga: json['harga'] is String
-        ? double.tryParse(json['harga']) ?? 0.0
-        : (json['harga'] as num).toDouble(),
-    kategoriMakananId: json['kategori_makanan_id'],
-  );
-}
-
-  Map<String, dynamic> toJson() {
-    return {
-      'nama': nama,
-      'deskripsi': deskripsi,
-      'harga': harga,
-      'kategori_makanan_id': kategoriMakananId,
-    };
+    return MakananModel(
+      id: json['id'],
+      nama: json['nama'],
+      deskripsi: json['deskripsi'],
+      harga: double.tryParse(json['harga'].toString()) ?? 0,
+      kategoriMakananId: json['kategori_makanan_id'],
+      gambar: json['gambar'], // atau `gambar_url` kalau field-nya gambar_url
+    );
   }
 }

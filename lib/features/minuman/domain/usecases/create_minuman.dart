@@ -1,4 +1,3 @@
-import '../entities/minuman_entity.dart';
 import '../repositories/minuman_repository.dart';
 
 class CreateMinuman {
@@ -6,7 +5,7 @@ class CreateMinuman {
 
   CreateMinuman(this.repository);
 
-  Future<void> call(MinumanEntity minuman) {
-    return repository.create(minuman);
+  Future<int> call(Map<String, dynamic> data) async {
+    return await repository.create(data);
   }
 }

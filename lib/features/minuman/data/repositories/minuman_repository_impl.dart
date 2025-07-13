@@ -1,7 +1,8 @@
-import '../../domain/entities/minuman_entity.dart';
+import 'dart:io';
+
 import '../../domain/repositories/minuman_repository.dart';
+import '../../domain/entities/minuman_entity.dart';
 import '../datasources/minuman_remote_datasource.dart';
-import '../models/minuman_model.dart';
 
 class MinumanRepositoryImpl implements MinumanRepository {
   final MinumanRemoteDatasource remoteDatasource;
@@ -9,36 +10,22 @@ class MinumanRepositoryImpl implements MinumanRepository {
   MinumanRepositoryImpl({required this.remoteDatasource});
 
   @override
-  Future<List<MinumanEntity>> getAll() async {
-    return await remoteDatasource.getAll();
-  }
+  Future<List<MinumanEntity>> getAll() =>
+      remoteDatasource.getAll();
 
   @override
-  Future<void> create(MinumanEntity minuman) async {
-    final model = MinumanModel(
-      id: minuman.id,
-      nama: minuman.nama,
-      deskripsi: minuman.deskripsi,
-      harga: minuman.harga,
-      kategoriMinumanId: minuman.kategoriMinumanId,
-    );
-    await remoteDatasource.create(model);
-  }
+  Future<int> create(Map<String, dynamic> data) =>
+      remoteDatasource.create(data);
 
   @override
-  Future<void> update(MinumanEntity minuman) async {
-    final model = MinumanModel(
-      id: minuman.id,
-      nama: minuman.nama,
-      deskripsi: minuman.deskripsi,
-      harga: minuman.harga,
-      kategoriMinumanId: minuman.kategoriMinumanId,
-    );
-    await remoteDatasource.update(model);
-  }
+  Future<void> update(int id, Map<String, dynamic> data) =>
+      remoteDatasource.update(id, data);
 
   @override
-  Future<void> delete(int id) async {
-    await remoteDatasource.delete(id);
-  }
+  Future<void> delete(int id) =>
+      remoteDatasource.delete(id);
+
+  @override
+  Future<void> uploadGambar(int id, File gambar) =>
+      remoteDatasource.uploadGambar(id, gambar);
 }

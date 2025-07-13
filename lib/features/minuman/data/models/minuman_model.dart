@@ -7,12 +7,14 @@ class MinumanModel extends MinumanEntity {
     String? deskripsi,
     required double harga,
     required int kategoriMinumanId,
+    String? gambar,
   }) : super(
           id: id,
           nama: nama,
           deskripsi: deskripsi,
           harga: harga,
           kategoriMinumanId: kategoriMinumanId,
+          gambar: gambar,
         );
 
   factory MinumanModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class MinumanModel extends MinumanEntity {
       deskripsi: json['deskripsi'],
       harga: double.tryParse(json['harga'].toString()) ?? 0.0,
       kategoriMinumanId: json['kategori_minuman_id'],
+      gambar: json['gambar'], // Kalau pakai gambar_url => json['gambar_url']
     );
   }
 

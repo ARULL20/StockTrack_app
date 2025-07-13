@@ -1,4 +1,3 @@
-import '../entities/makanan_entity.dart';
 import '../repositories/makanan_repository.dart';
 
 class CreateMakanan {
@@ -6,7 +5,7 @@ class CreateMakanan {
 
   CreateMakanan(this.repository);
 
-  Future<void> call(MakananEntity makanan) {
-    return repository.create(makanan);
+  Future<int> call(Map<String, dynamic> data) async {
+    return await repository.createMakanan(data);
   }
 }

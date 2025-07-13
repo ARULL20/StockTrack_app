@@ -6,7 +6,7 @@ class GetAllMinuman {
 
   GetAllMinuman(this.repository);
 
-  Future<List<MinumanEntity>> call() {
-    return repository.getAll();
+  Future<List<MinumanEntity>> call() async {
+    return await repository.getAll();
   }
 }

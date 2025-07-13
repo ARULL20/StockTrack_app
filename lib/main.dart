@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:stoktrack_app/features/gudang/presentation/pages/pick_location_page.dart';
+import 'package:stoktrack_app/features/minuman/domain/usecases/upload_gambar_minuman.dart';
+
 
 
 // === CORE ===
@@ -71,7 +73,6 @@ import 'package:stoktrack_app/features/minuman/presentation/bloc/minuman_bloc.da
 import 'package:stoktrack_app/features/minuman/presentation/pages/minuman_form_page.dart';
 
 // === MAKANAN ===
-import 'features/makanan/data/datasources/makanan_remote_datasource_impl.dart';
 import 'features/makanan/data/repositories/makanan_repository_impl.dart';
 import 'features/makanan/domain/usecases/get_all_makanan.dart';
 import 'features/makanan/domain/usecases/create_makanan.dart';
@@ -79,14 +80,19 @@ import 'features/makanan/domain/usecases/update_makanan.dart';
 import 'features/makanan/domain/usecases/delete_makanan.dart';
 import 'features/makanan/presentation/bloc/makanan_bloc.dart';
 import 'features/makanan/presentation/pages/makanan_form_page.dart';
+import 'package:stoktrack_app/features/makanan/data/datasources/makanan_remote_datasource.dart';
+import 'package:stoktrack_app/features/makanan/domain/usecases/upload_gambar_makanan.dart';
 
 // === MINUMAN ===
-import 'features/minuman/data/datasources/minuman_remote_datasource_impl.dart';
 import 'features/minuman/data/repositories/minuman_repository_impl.dart';
 import 'features/minuman/domain/usecases/get_all_minuman.dart';
 import 'features/minuman/domain/usecases/create_minuman.dart';
 import 'features/minuman/domain/usecases/update_minuman.dart';
 import 'features/minuman/domain/usecases/delete_minuman.dart';
+import 'package:stoktrack_app/features/minuman/data/datasources/minuman_remote_datasource.dart';
+import 'features/minuman/domain/usecases/upload_gambar_minuman.dart';
+
+
 
 // === BARANG KELUAR ===
 import 'features/barang_keluar/data/repositories/barang_keluar_repository_impl.dart';
@@ -170,6 +176,8 @@ void main() {
   final createMakanan = CreateMakanan(makananRepository);
   final updateMakanan = UpdateMakanan(makananRepository);
   final deleteMakanan = DeleteMakanan(makananRepository);
+  final uploadGambarMakanan = UploadGambarMakanan(makananRepository);
+
 
   // === MINUMAN ===
   // === MINUMAN ===
@@ -179,6 +187,7 @@ void main() {
   final createMinuman = CreateMinuman(minumanRepository);
   final updateMinuman = UpdateMinuman(minumanRepository);
   final deleteMinuman = DeleteMinuman(minumanRepository);
+  final uploadGambarMinuman = UploadGambarMinuman(minumanRepository);
 
     // === BARANG KELUAR ===
   final barangKeluarRemoteDatasource = BarangKeluarRemoteDatasourceImpl(apiClient: apiClient);
@@ -246,20 +255,23 @@ void main() {
             delete: deleteKategoriMinuman,
           ),
         ),
-        BlocProvider(
+       BlocProvider(
           create: (_) => MakananBloc(
-            getAll: getAllMakanan,
-            create: createMakanan,
-            update: updateMakanan,
-            delete: deleteMakanan,
+            getAllMakanan: getAllMakanan,
+            createMakanan: createMakanan,
+            updateMakanan: updateMakanan,
+            deleteMakanan: deleteMakanan,
+            uploadGambarMakanan: uploadGambarMakanan,
           ),
         ),
-        BlocProvider(
+
+         BlocProvider(
           create: (_) => MinumanBloc(
-            getAll: getAllMinuman,
-            create: createMinuman,
-            update: updateMinuman,
-            delete: deleteMinuman,
+            getAllMinuman: getAllMinuman,
+            createMinuman: createMinuman,
+            updateMinuman: updateMinuman,
+            deleteMinuman: deleteMinuman,
+            uploadGambarMinuman: uploadGambarMinuman,
           ),
         ),
         BlocProvider(
