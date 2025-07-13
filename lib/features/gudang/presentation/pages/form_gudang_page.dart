@@ -49,6 +49,7 @@ class _FormGudangPageState extends State<FormGudangPage> {
       setState(() {
         _latitude = result['latitude'];
         _longitude = result['longitude'];
+        _lokasiController.text = 'Lat: $_latitude, Long: $_longitude'; // ✅ Tambah sinkronisasi
       });
     }
   }
